@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Encuestas CABA</title>
+  <link rel="stylesheet" href="login.css">
+
+</head>
+<body>
+    <div id="nav">
+        <a href=""><img src="assets/LOGOBA.png" class="logo"/></a>
+    </div>
+
+    <h2>Bienvenido</h2>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Contraseña" />
+    <button id="loginBtn">Ingresar</button>
+    <button id="googleBtn">Ingresar con Google</button>
+    <p>¿No tenés cuenta?</p>
+    <button id="signupBtn">Crear cuenta nueva</button>
+    <button id="guestBtn">Entrar como invitado</button>
+
+    <p id="error" style="color:red;"></p>
+
+  <script type="module">
+    import { auth, signInWithEmailAndPassword, signInWithPopup, googleProvider } from './firebaseConfig.js';
+    import { createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+    const error = document.getElementById('error');
+
+    document.getElementById('guestBtn').addEventListener('click', () => {
+    localStorage.setItem("user", "invitado");
+    window.location.href = "encuestas.html";
+    });
+    
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        localStorage.setItem("user", userCredential.user.email);
+        window.location.href = "encuestas.html";
+      } catch (e) {
+        error.textContent = "Error: " + e.message;
+      }
+    });
+
+    
+    document.getElementById('signupBtn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    if (!email || !password) {
+        error.textContent = "Ingresá un email y una contraseña para registrarte";
+        return;
+    }
+
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        localStorage.setItem("user", userCredential.user.email);
+        window.location.href = "encuestas.html";
+    } catch (e) {
+        error.textContent = "Error al crear la cuenta: " + e.message;
+    }
+    });
+
+    document.getElementById('googleBtn').addEventListener('click', async () => {
+      try {
+        const result = await signInWithPopup(auth, googleProvider);
+        localStorage.setItem("user", result.user.email);
+        window.location.href = "encuestas.html";
+      } catch (e) {
+        error.textContent = "Error: " + e.message;
+      }
+    });
+  </script>
+</body>
+</html>
