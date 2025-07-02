@@ -31,7 +31,7 @@
 
     document.getElementById('guestBtn').addEventListener('click', () => {
     localStorage.setItem("user", "invitado");
-    window.location.href = "encuestas.html";
+    window.location.href = "index.html";
     });
     
     document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -41,7 +41,7 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         localStorage.setItem("user", userCredential.user.email);
-        window.location.href = "encuestas.html";
+        window.location.href = "index.html";
       } catch (e) {
         error.textContent = "Error: " + e.message;
       }
@@ -60,7 +60,7 @@
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         localStorage.setItem("user", userCredential.user.email);
-        window.location.href = "encuestas.html";
+        window.location.href = "index.html";
     } catch (e) {
         error.textContent = "Error al crear la cuenta: " + e.message;
     }
@@ -70,7 +70,7 @@
       try {
         const result = await signInWithPopup(auth, googleProvider);
         localStorage.setItem("user", result.user.email);
-        window.location.href = "encuestas.html";
+        window.location.href = "index.html";
       } catch (e) {
         error.textContent = "Error: " + e.message;
       }
