@@ -2,12 +2,17 @@ const CACHE_NAME = "caba-encuesta-cache-v4";
 const FILES_TO_CACHE = [
   "/",
   "/index.html",
+  "/404.html",
+  "/login.html",
   "/style.css",
+  "/login.css",
   "/app.js",
   "/db.js",
   "/componentes/rating.js",
   "/componentes/listaComentarios.js",
+  "/componentes/autenticacio.js",
   "/manifest.json",
+  "/firebase.json",
   "/assets/LOGOBA.png",
   "/assets/limpieza.jpg",
   "/assets/colectivo.jpg",
@@ -18,7 +23,7 @@ const FILES_TO_CACHE = [
   "/assets/accesibilidad.jpeg",
   "/assets/icon.png",
   "/assets/fondo.png"
-];
+];  
 
 self.addEventListener("install", event => {
   event.waitUntil(
