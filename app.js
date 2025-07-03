@@ -5,7 +5,6 @@ import { mostrarComentarios } from './componentes/listaComentarios.js';
 const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
 
-// Verificar si el usuario está logueado
 const usuario = localStorage.getItem("user");
 if (!usuario) {
   alert("Debes iniciar sesión o entrar como invitado.");

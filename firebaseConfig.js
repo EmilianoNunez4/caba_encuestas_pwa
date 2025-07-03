@@ -1,4 +1,4 @@
-// firebaseConfig.js
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
@@ -11,7 +11,7 @@ const firebaseConfig = {
   appId: "1:938428364499:web:200378af937b11af178626"
 };
 
-// Inicializa Firebase y exporta lo necesario
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const googleProvider = new GoogleAuthProvider();

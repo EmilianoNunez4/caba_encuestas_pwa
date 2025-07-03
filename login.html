@@ -18,8 +18,8 @@
     <button id="loginBtn">Ingresar</button>
     <button id="googleBtn">Ingresar con Google</button>
     <p>¿No tenés cuenta?</p>
-    <button id="signupBtn">Crear cuenta nueva</button>
-    <button id="guestBtn">Entrar como invitado</button>
+    <button id="crearBtn">Crear cuenta nueva</button>
+    <button id="invitadoBtn">Entrar como invitado</button>
 
     <p id="error" style="color:red;"></p>
 
@@ -29,7 +29,7 @@
 
     const error = document.getElementById('error');
 
-    document.getElementById('guestBtn').addEventListener('click', () => {
+    document.getElementById('invitadoBtn').addEventListener('click', () => {
     localStorage.setItem("user", "invitado");
     window.location.href = "index.html";
     });
@@ -46,9 +46,8 @@
         error.textContent = "Error: " + e.message;
       }
     });
-
     
-    document.getElementById('signupBtn').addEventListener('click', async () => {
+    document.getElementById('crearBtn').addEventListener('click', async () => {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
