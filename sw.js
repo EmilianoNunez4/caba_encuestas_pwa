@@ -2,7 +2,6 @@ const CACHE_NAME = "caba-encuesta-cache-v4";
 const FILES_TO_CACHE = [
   "/",
   "/index.html",
-  "/404.html",
   "/login.html",
   "/style.css",
   "/login.css",
@@ -10,9 +9,7 @@ const FILES_TO_CACHE = [
   "/db.js",
   "/componentes/rating.js",
   "/componentes/listaComentarios.js",
-  "/componentes/autenticacio.js",
   "/manifest.json",
-  "/firebase.json",
   "/assets/LOGOBA.png",
   "/assets/limpieza.jpg",
   "/assets/colectivo.jpg",
