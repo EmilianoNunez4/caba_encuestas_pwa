@@ -19,7 +19,7 @@ document.getElementById("activarNotificaciones").addEventListener("click", async
     if (permission === "granted") {
       const token = await getToken(messaging, {
         vapidKey: "BPb8gUBtvTM1XXi_D7pD_UR2Dzt089ztx_O4bbcoIUNypzYJACR8yXFB1WNtQwiirrV__Q1JCkO2cAWuNPtNb7g",
-        serviceWorkerRegistration: await navigator.serviceWorker.register("firebase-messaging-sw.js"),
+        serviceWorkerRegistration: await navigator.serviceWorker.register("sw.js"),
       });
       console.log("Token:", token);
       document.getElementById("token").textContent = `Token generado: ${token}`;
