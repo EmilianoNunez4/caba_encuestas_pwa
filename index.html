@@ -9,6 +9,9 @@
 </head>
 <body>
 
+<button id="solicitarPermiso">Activar Notificaciones</button>
+<p id="token" style="word-break: break-all;"></p>
+
     <div id="nav">
       <a href=""><img src="assets/LOGOBA.png" class="logo"/></a>
       <h1>Ciudad de Buenos Aires</h1>
@@ -25,16 +28,10 @@
     </div>
     <div id="content"></div>
 
-    <button onclick="logout()" class="close">Cerrar sesión</button>
-    
-<script>
-  function logout() {
-    localStorage.removeItem("user");
-    window.location.href = "login.html";
-  }
-</script>
+<button onclick="logout()" class="close">Cerrar sesión</button>   
 
 <script type="module" src="app.js"></script>
+<script type="module" src="main.js"></script>
 
 </body>
 </html>

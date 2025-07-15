@@ -12,6 +12,11 @@ if (!usuario) {
 }
 const esInvitado = usuario === "invitado";
 
+window.logout = function () {
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+}
+
 buttons.forEach(btn => {
   btn.addEventListener('click', async () => {
     const categoria = btn.dataset.tab;
@@ -33,10 +38,8 @@ buttons.forEach(btn => {
           alert("Debes iniciar sesión para enviar un comentario.");
           return;
         }
-
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
-      //ACA AGREGUE EL IF NAVIGATOR ONLINE PARA QUE FUNCIONE SIN CONEXION Y CON
         if (navigator.onLine) {
           await guardarComentario(categoria, { texto, calificacion, fecha: new Date().toISOString() });
         } else {
@@ -50,14 +53,12 @@ buttons.forEach(btn => {
   });
 });
 
-//ACA AGREGUE QUE REENVIENTE PENDIENTE CUANDO EL NAVEGADOR ESTE NE LINEA
 window.addEventListener("online", () => {
   reenviarPendientes().then(() => {
     console.log("Comentarios pendientes reenviados correctamente");
   });
 });
 
-//esta es la instalacion del servis worker para que se registre en el navegador y pueda trabajar on y off -line
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
