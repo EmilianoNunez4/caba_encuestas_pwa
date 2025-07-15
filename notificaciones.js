@@ -1,5 +1,5 @@
 import { messaging } from './firebaseConfig.js';
-import {getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
+import { getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
 document.getElementById("solicitarPermiso").addEventListener("click", async () => {
   try {
