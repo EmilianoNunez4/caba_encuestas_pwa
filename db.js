@@ -1,3 +1,26 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDktnfDVAwTjdLgApgx6jOiph8fCVVQsjY",
+  authDomain: "caba-encuestas.firebaseapp.com",
+  projectId: "caba-encuestas",
+  storageBucket: "caba-encuestas.appspot.com",
+  messagingSenderId: "938428364499",
+  appId: "1:938428364499:web:200378af937b11af178626"
+};
+
+const app = initializeApp(firebaseConfig);
+const dbFirestore = getFirestore(app);
+
+
 let db;
 
 export function inicializarDB() {
@@ -15,13 +38,18 @@ export function inicializarDB() {
   request.onsuccess = e => { db = e.target.result; };
 }
 
-export function guardarComentario(categoria, comentario) {
-  return new Promise(resolve => {
-    const tx = db.transaction("comentarios", "readwrite");
-    const store = tx.objectStore("comentarios");
-    store.add({ ...comentario, categoria });
-    tx.oncomplete = resolve;
-  });
+// 🔥 Guardar comentario en Firestore
+export async function guardarComentario(categoria, comentario) {
+  try {
+    await addDoc(collection(dbFirestore, "comentarios"), {
+      ...comentario,
+      categoria,
+      fecha: new Date().toISOString()
+    });
+    console.log("✅ Comentario guardado en Firestore");
+  } catch (error) {
+    console.error("❌ Error al guardar comentario:", error);
+  }
 }
 
 //agregue este que gvuarda los comentarios de manera ofline
@@ -34,15 +62,18 @@ export function guardarComentarioOFF(categoria, comentario) {
   });
 }
 
-export function traerComentarios(categoria) {
-  return new Promise(resolve => {
-    const tx = db.transaction("comentarios", "readonly");
-    const store = tx.objectStore("comentarios");
-    const request = store.getAll();
-    request.onsuccess = () => {
-      resolve(request.result.filter(c => c.categoria === categoria));
-    };
-  });
+export async function traerComentarios(categoria) {
+  try {
+    const q = query(
+      collection(dbFirestore, "comentarios"),
+      where("categoria", "==", categoria)
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map(doc => doc.data());
+  } catch (error) {
+    console.error("❌ Error al traer comentarios:", error);
+    return [];
+  }
 }
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
@@ -67,36 +98,3 @@ export async function reenviarPendientes() {
   };
 } 
 
-const app = initializeApp(firebaseConfig);
-const dbFirestore = getFirestore(app);
-
-export async function guardarComentario(categoria, comentario) {
-  try {
-    await addDoc(collection(dbFirestore, "comentarios"), {
-      ...comentario,
-      categoria
-    });
-    console.log("Comentario guardado en Firestore");
-  } catch (error) {
-    console.error("Error al guardar comentario:", error);
-  }
-}
-
-export async function traerComentarios(categoria) {
-  try {
-    const q = query(
-      collection(dbFirestore, "comentarios"),
-      where("categoria", "==", categoria)
-    );
-
-    const querySnapshot = await getDocs(q);
-    const resultados = [];
-    querySnapshot.forEach((doc) => {
-      resultados.push(doc.data());
-    });
-    return resultados;
-  } catch (error) {
-    console.error("Error al traer comentarios:", error);
-    return [];
-  }
-}
