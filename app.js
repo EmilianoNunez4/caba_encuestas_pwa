@@ -51,10 +51,11 @@ buttons.forEach(btn => {
       if (navigator.onLine) {
         await guardarComentario(categoria, comentario);
         mostrarComentarios(categoria, document.getElementById('comentarios'));
-        alert("✅ Comentario enviado");
+        console.log("✅ Comentario enviado a Firestore");
       } else {
         await guardarComentarioOFF(categoria, comentario);
-        return content.textContent = 'Sin conexión. Guardado localmente.';
+        content.textContent = "Sin conexión. Guardado localmente.";
+        console.log("💾 Comentario guardado offline en IndexedDB");
       }
 
       document.getElementById('comentario').value = "";
@@ -66,8 +67,9 @@ buttons.forEach(btn => {
 
 
 window.addEventListener("online", async () => {
-  console.log("🌐 Conexión restaurada, reenviando...");
+  console.log("🌐 Conexión restaurada");
   await reenviarPendientes();
+  console.log("📤 Comentarios pendientes reenviados correctamente");
 
   const categoriaActual = localStorage.getItem("categoriaActual");
   if (categoriaActual) {
@@ -76,9 +78,8 @@ window.addEventListener("online", async () => {
       mostrarComentarios(categoriaActual, contenedor);
     }
   }
-
-  alert("📤 Comentarios pendientes reenviados correctamente");
 });
+
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
