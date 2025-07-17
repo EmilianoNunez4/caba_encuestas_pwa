@@ -4,12 +4,13 @@ import { mostrarComentarios } from './componentes/listaComentarios.js';
 
 const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
-
 const usuario = localStorage.getItem("user");
+
 if (!usuario) {
   alert("Debes iniciar sesión o entrar como invitado.");
   window.location.href = "login.html";
 }
+
 const esInvitado = usuario === "invitado";
 
 window.logout = function () {
@@ -33,34 +34,58 @@ buttons.forEach(btn => {
     `;
     crearRating(document.getElementById('calificacion'));
 
-  document.getElementById('submit').addEventListener('click', async () => {
+   document.getElementById('submit').addEventListener('click', async () => {
       if (esInvitado) {
-          alert("Debes iniciar sesión para enviar un comentario.");
-          return;
-        }
+        alert("Debes iniciar sesión para enviar un comentario.");
+        return;
+      }
+
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
-        if (navigator.onLine) {
-          await guardarComentario(categoria, { texto, calificacion, fecha: new Date().toISOString() });
-        } else {
-          await guardarComentarioOFF(categoria, { texto, calificacion, fecha: new Date().toISOString() });
-          console.log( "comentarios guardados")
-          return content.textContent = 'Sin conexión. Guardado localmente.';
-        }
+
+      if (!texto || calificacion === 0) {
+        alert("Por favor completá el comentario y la calificación.");
+        return;
+      }
+
+      const comentario = {
+        texto,
+        calificacion,
+        fecha: new Date().toISOString(),
+        email: usuario
+      };
+
+      if (navigator.onLine) {
+        await guardarComentario(categoria, comentario);
+        mostrarComentarios(categoria, document.getElementById('comentarios'));
+        alert("✅ Comentario enviado");
+      } else {
+        await guardarComentarioOFF(categoria, comentario);
+        content.insertAdjacentHTML('beforeend', `<p class="offline-msg">📡 Sin conexión. Comentario guardado localmente.</p>`);
+        console.log("💾 Comentario guardado localmente");
+      }
+
       document.getElementById('comentario').value = "";
-      mostrarComentarios(categoria, document.getElementById('comentarios'));
     });
+
     mostrarComentarios(categoria, document.getElementById('comentarios'));
   });
 });
 
-window.addEventListener("online", () => {
-  console.log("🌐 EVENTO ONLINE DETECTADO"); // <-- ESTE DEBERÍA VERSE SÍ O SÍ
-  reenviarPendientes()
-    .then(() => {
-      console.log("🎉 Comentarios pendientes reenviados correctamente");
-    })
-    .catch(err => console.error("❌ Error en reenvío:", err));
+
+window.addEventListener("online", async () => {
+  console.log("🌐 Conexión restaurada, reenviando...");
+  await reenviarPendientes();
+
+  const categoriaActual = localStorage.getItem("categoriaActual");
+  if (categoriaActual) {
+    const contenedor = document.getElementById('comentarios');
+    if (contenedor) {
+      mostrarComentarios(categoriaActual, contenedor);
+    }
+  }
+
+  alert("📤 Comentarios pendientes reenviados correctamente");
 });
 
 if ('serviceWorker' in navigator) {

@@ -54,11 +54,23 @@ export async function guardarComentario(categoria, comentario) {
 
 //agregue este que gvuarda los comentarios de manera ofline
 export function guardarComentarioOFF(categoria, comentario) {
-  return new Promise(resolve => {
-    const tx = db.transaction("pendientes", "readwrite");
-    const store = tx.objectStore("pendientes");
-    store.add({ ...comentario, categoria });
-    tx.oncomplete = resolve;
+  return new Promise((resolve, reject) => {
+    try {
+      const tx = db.transaction("pendientes", "readwrite");
+      const store = tx.objectStore("pendientes");
+      store.add({ ...comentario, categoria });
+      tx.oncomplete = () => {
+        console.log("💾 Comentario guardado offline:", comentario);
+        resolve();
+      };
+      tx.onerror = (e) => {
+        console.error("❌ Error al guardar offline:", e);
+        reject(e);
+      };
+    } catch (error) {
+      console.error("❌ Error en guardarComentarioOFF:", error);
+      reject(error);
+    }
   });
 }
 
@@ -78,7 +90,11 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
-    console.log("👀 DB al entrar en reenviarPendientes:", db);
+  console.log("📡 Ejecutando reenviarPendientes...");
+  if (!db) {
+    console.warn("⚠️ IndexedDB no está inicializada todavía");
+    return;
+  }
 
   return new Promise((resolve, reject) => {
     const leerTx = db.transaction("pendientes", "readonly");
@@ -91,11 +107,13 @@ export async function reenviarPendientes() {
 
       for (const comentario of pendientes) {
         try {
+          // 🔥 Subir a Firestore
           await addDoc(collection(dbFirestore, "comentarios"), {
             ...comentario,
             fecha: new Date().toISOString()
           });
 
+          // 🧹 Borrar de IndexedDB
           const borrarTx = db.transaction("pendientes", "readwrite");
           const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);
@@ -103,16 +121,16 @@ export async function reenviarPendientes() {
           console.log("✅ Comentario reenviado:", comentario);
         } catch (error) {
           console.error("❌ Error reenviando comentario:", error);
-          reject(error); // 🚨 Si falla alguno, rechazamos
+          reject(error);
           return;
         }
       }
 
-      resolve(); // 🟢 Todo salió bien
+      resolve(); // 🟢 Terminó todo bien
     };
 
     request.onerror = (e) => {
-      console.error("❌ Error leyendo los comentarios pendientes:", e);
+      console.error("❌ Error al leer los comentarios pendientes:", e);
       reject(e);
     };
   });
