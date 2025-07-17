@@ -86,15 +86,21 @@ export async function reenviarPendientes() {
     const pendientes = request.result;
 
     for (const comentario of pendientes) {
-      // aca guarda el comentario pendiente en comentarios
-      const txGuardar = db.transaction("comentarios", "readwrite");
-      const storeGuardar = txGuardar.objectStore("comentarios");
-      storeGuardar.add({ ...comentario });
-      // y luego lo elimina de pendientes
-      const txBorrar = db.transaction("pendientes", "readwrite");
-      const storeBorrar = txBorrar.objectStore("pendientes");
-      storeBorrar.delete(comentario.id);
+      try {
+        await addDoc(collection(dbFirestore, "comentarios"), {
+          ...comentario,
+          fecha: new Date().toISOString()
+        });
+
+        const txBorrar = db.transaction("pendientes", "readwrite");
+        const storeBorrar = txBorrar.objectStore("pendientes");
+        storeBorrar.delete(comentario.id);
+
+        console.log("✅ Comentario reenviado:", comentario);
+      } catch (error) {
+        console.error("❌ Error al reenviar comentario:", error);
+      }
     }
   };
-} 
+}
 
