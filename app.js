@@ -47,22 +47,14 @@ buttons.forEach(btn => {
         alert("Por favor completá el comentario y la calificación.");
         return;
       }
-
-      const comentario = {
-        texto,
-        calificacion,
-        fecha: new Date().toISOString(),
-        email: usuario
-      };
-
+      const comentario = {texto, calificacion, fecha: new Date().toISOString(), email: usuario};
       if (navigator.onLine) {
         await guardarComentario(categoria, comentario);
         mostrarComentarios(categoria, document.getElementById('comentarios'));
         alert("✅ Comentario enviado");
       } else {
         await guardarComentarioOFF(categoria, comentario);
-        content.insertAdjacentHTML('beforeend', `<p class="offline-msg">📡 Sin conexión. Comentario guardado localmente.</p>`);
-        console.log("💾 Comentario guardado localmente");
+        return content.textContent = 'Sin conexión. Guardado localmente.';
       }
 
       document.getElementById('comentario').value = "";

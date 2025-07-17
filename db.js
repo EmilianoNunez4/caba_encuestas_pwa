@@ -46,9 +46,9 @@ export async function guardarComentario(categoria, comentario) {
       categoria,
       fecha: new Date().toISOString()
     });
-    console.log("✅ Comentario guardado en Firestore");
+    console.log("Comentario guardado en Firestore");
   } catch (error) {
-    console.error("❌ Error al guardar comentario:", error);
+    console.error("Error al guardar comentario:", error);
   }
 }
 
@@ -60,15 +60,15 @@ export function guardarComentarioOFF(categoria, comentario) {
       const store = tx.objectStore("pendientes");
       store.add({ ...comentario, categoria });
       tx.oncomplete = () => {
-        console.log("💾 Comentario guardado offline:", comentario);
+        console.log("Comentario guardado offline:", comentario);
         resolve();
       };
       tx.onerror = (e) => {
-        console.error("❌ Error al guardar offline:", e);
+        console.error("Error al guardar offline:", e);
         reject(e);
       };
     } catch (error) {
-      console.error("❌ Error en guardarComentarioOFF:", error);
+      console.error("Error en guardarComentarioOFF:", error);
       reject(error);
     }
   });
@@ -83,7 +83,7 @@ export async function traerComentarios(categoria) {
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => doc.data());
   } catch (error) {
-    console.error("❌ Error al traer comentarios:", error);
+    console.error(" Error al traer comentarios:", error);
     return [];
   }
 }
@@ -92,7 +92,7 @@ export async function traerComentarios(categoria) {
 export async function reenviarPendientes() {
   console.log("📡 Ejecutando reenviarPendientes...");
   if (!db) {
-    console.warn("⚠️ IndexedDB no está inicializada todavía");
+    console.warn("IndexedDB no está inicializada todavía");
     return;
   }
 
@@ -103,7 +103,7 @@ export async function reenviarPendientes() {
 
     request.onsuccess = async () => {
       const pendientes = request.result;
-      console.log("🔁 Comentarios pendientes encontrados:", pendientes);
+      console.log("Comentarios pendientes encontrados:", pendientes);
 
       for (const comentario of pendientes) {
         try {
@@ -118,9 +118,9 @@ export async function reenviarPendientes() {
           const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);
 
-          console.log("✅ Comentario reenviado:", comentario);
+          console.log("Comentario reenviado:", comentario);
         } catch (error) {
-          console.error("❌ Error reenviando comentario:", error);
+          console.error("Error reenviando comentario:", error);
           reject(error);
           return;
         }
@@ -130,7 +130,7 @@ export async function reenviarPendientes() {
     };
 
     request.onerror = (e) => {
-      console.error("❌ Error al leer los comentarios pendientes:", e);
+      console.error("Error al leer los comentarios pendientes:", e);
       reject(e);
     };
   });
