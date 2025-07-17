@@ -44,6 +44,7 @@ buttons.forEach(btn => {
           await guardarComentario(categoria, { texto, calificacion, fecha: new Date().toISOString() });
         } else {
           await guardarComentarioOFF(categoria, { texto, calificacion, fecha: new Date().toISOString() });
+            console.log( "comentarios guardados")
             return content.textContent = 'Sin conexión. Guardado localmente.';
         }
       document.getElementById('comentario').value = "";
@@ -54,9 +55,8 @@ buttons.forEach(btn => {
 });
 
 window.addEventListener("online", () => {
-  reenviarPendientes().then(() => {
-    console.log("Comentarios pendientes reenviados correctamente");
-  });
+  console.log("Comentarios pendientes reenviados correctamente");
+  reenviarPendientes();
 });
 
 if ('serviceWorker' in navigator) {

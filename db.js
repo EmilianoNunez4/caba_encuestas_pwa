@@ -78,29 +78,37 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
-  const leerTx = db.transaction("pendientes", "readonly");
-  const storeleer = leerTx.objectStore("pendientes");
-  const request = storeleer.getAll();
+  try {
+    const leerTx = db.transaction("pendientes", "readonly");
+    const storeleer = leerTx.objectStore("pendientes");
+    const request = storeleer.getAll();
 
-  request.onsuccess = async () => {
-    const pendientes = request.result;
+    request.onsuccess = async () => {
+      const pendientes = request.result;
+      console.log("📦 Comentarios pendientes:", pendientes);
 
-    for (const comentario of pendientes) {
-      try {
-        await addDoc(collection(dbFirestore, "comentarios"), {
-          ...comentario,
-          fecha: new Date().toISOString()
-        });
+      for (const comentario of pendientes) {
+        try {
+          await addDoc(collection(dbFirestore, "comentarios"), {
+            ...comentario,
+            fecha: new Date().toISOString()
+          });
 
-        const txBorrar = db.transaction("pendientes", "readwrite");
-        const storeBorrar = txBorrar.objectStore("pendientes");
-        storeBorrar.delete(comentario.id);
+          const txBorrar = db.transaction("pendientes", "readwrite");
+          const storeBorrar = txBorrar.objectStore("pendientes");
+          storeBorrar.delete(comentario.id);
 
-        console.log("✅ Comentario reenviado:", comentario);
-      } catch (error) {
-        console.error("❌ Error al reenviar comentario:", error);
+          console.log("✅ Comentario reenviado:", comentario);
+        } catch (error) {
+          console.error("❌ Error al reenviar comentario:", error);
+        }
       }
-    }
-  };
-}
+    };
 
+    request.onerror = (e) => {
+      console.error("❌ Error leyendo IndexedDB:", e);
+    };
+  } catch (err) {
+    console.error("❌ Falla general en reenviarPendientes:", err);
+  }
+}
