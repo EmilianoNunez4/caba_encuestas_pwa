@@ -78,14 +78,14 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
-  try {
+  return new Promise((resolve, reject) => {
     const leerTx = db.transaction("pendientes", "readonly");
-    const storeleer = leerTx.objectStore("pendientes");
-    const request = storeleer.getAll();
+    const storeLeer = leerTx.objectStore("pendientes");
+    const request = storeLeer.getAll();
 
     request.onsuccess = async () => {
       const pendientes = request.result;
-      console.log("📦 Comentarios pendientes:", pendientes);
+      console.log("🔁 Comentarios pendientes encontrados:", pendientes);
 
       for (const comentario of pendientes) {
         try {
@@ -94,21 +94,24 @@ export async function reenviarPendientes() {
             fecha: new Date().toISOString()
           });
 
-          const txBorrar = db.transaction("pendientes", "readwrite");
-          const storeBorrar = txBorrar.objectStore("pendientes");
+          const borrarTx = db.transaction("pendientes", "readwrite");
+          const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);
 
           console.log("✅ Comentario reenviado:", comentario);
         } catch (error) {
-          console.error("❌ Error al reenviar comentario:", error);
+          console.error("❌ Error reenviando comentario:", error);
+          reject(error); // 🚨 Si falla alguno, rechazamos
+          return;
         }
       }
+
+      resolve(); // 🟢 Todo salió bien
     };
 
     request.onerror = (e) => {
-      console.error("❌ Error leyendo IndexedDB:", e);
+      console.error("❌ Error leyendo los comentarios pendientes:", e);
+      reject(e);
     };
-  } catch (err) {
-    console.error("❌ Falla general en reenviarPendientes:", err);
-  }
+  });
 }
