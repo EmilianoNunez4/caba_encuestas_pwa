@@ -55,8 +55,8 @@ buttons.forEach(btn => {
 });
 
 window.addEventListener("online", () => {
-  console.log("Comentarios pendientes reenviados correctamente");
   reenviarPendientes();
+  console.log("Comentarios pendientes reenviados correctamente");
 });
 
 if ('serviceWorker' in navigator) {
