@@ -55,14 +55,12 @@ buttons.forEach(btn => {
 });
 
 window.addEventListener("online", () => {
+  console.log("🌐 EVENTO ONLINE DETECTADO"); // <-- ESTE DEBERÍA VERSE SÍ O SÍ
   reenviarPendientes()
     .then(() => {
       console.log("🎉 Comentarios pendientes reenviados correctamente");
-      // 🔄 Podés llamar acá a mostrarComentarios()
     })
-    .catch((error) => {
-      console.error("❌ Falló el reenvío de comentarios pendientes:", error);
-    });
+    .catch(err => console.error("❌ Error en reenvío:", err));
 });
 
 if ('serviceWorker' in navigator) {
