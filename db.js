@@ -78,6 +78,8 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
+    console.log("👀 DB al entrar en reenviarPendientes:", db);
+
   return new Promise((resolve, reject) => {
     const leerTx = db.transaction("pendientes", "readonly");
     const storeLeer = leerTx.objectStore("pendientes");
