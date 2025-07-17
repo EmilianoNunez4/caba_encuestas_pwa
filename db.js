@@ -44,6 +44,7 @@ export function inicializarDB() {
 // ✅ Guardar comentario online/offline
 export async function guardarComentario(categoria, comentario) {
   const datos = { ...comentario, categoria };
+    console.log("🔥 Entrando a guardarComentario", categoria, comentario);
 
   if (navigator.onLine) {
     try {
