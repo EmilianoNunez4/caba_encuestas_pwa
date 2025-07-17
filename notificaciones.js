@@ -7,7 +7,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const output = document.getElementById("token");
 
   if (!btn) {
-    console.warn("❌ No se encontró el botón con id 'solicitarPermiso'");
+    console.warn("No se encontró el botón con id 'solicitarPermiso'");
     return;
   }
 
@@ -20,7 +20,7 @@ window.addEventListener("DOMContentLoaded", () => {
       }
 
       const registration = await navigator.serviceWorker.register("/sw.js");
-      console.log("✅ Service Worker registrado");
+      console.log("Service Worker registrado");
 
       const token = await getToken(messaging, {
         vapidKey: "BF6XzSkOHnWkgskaKwAhVOik3RUKO_CRseeTxwvTA4LuA7bWTFgbjjIOPJn2e4JE6gcD6KCLdnme9XWIqK0q0JM",
@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", () => {
       console.log("🔑 Token generado:", token);
       if (output) output.textContent = "Token: " + token;
     } catch (err) {
-      console.error("❌ Error al obtener token:", err);
+      console.error("Error al obtener token:", err);
     }
   });
 
