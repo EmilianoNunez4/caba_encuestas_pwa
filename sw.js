@@ -17,7 +17,7 @@ const FILES_TO_CACHE = [
   "/assets/seguridad.jpg",
   "/assets/accesibilidad.jpeg",
   "/assets/icon.png",
-  "/assets/fondo.png"
+  "/assets/fondo.jpg"
 ];  
 
 self.addEventListener("install", event => {
