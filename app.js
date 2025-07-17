@@ -42,11 +42,6 @@ buttons.forEach(btn => {
 
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
-
-      if (!texto || calificacion === 0) {
-        alert("Por favor completá el comentario y la calificación.");
-        return;
-      }
       const comentario = {texto, calificacion, fecha: new Date().toISOString(), email: usuario};
       if (navigator.onLine) {
         await guardarComentario(categoria, comentario);
