@@ -41,8 +41,7 @@ buttons.forEach(btn => {
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
         if (navigator.onLine) {
-          await guardarComentario(categoria, {texto, calificacion, fecha: new Date().toISOString(), email: usuario});
-          console.log(navigator.onLine)
+          await guardarComentario(categoria, { texto, calificacion, fecha: new Date().toISOString() });
         } else {
           await guardarComentarioOFF(categoria, { texto, calificacion, fecha: new Date().toISOString() });
             return content.textContent = 'Sin conexión. Guardado localmente.';
