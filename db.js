@@ -48,10 +48,12 @@ export async function guardarComentario(categoria, comentario) {
   if (navigator.onLine) {
     try {
       console.log("📤 Enviando a Firestore:", datos);
+      console.log("Intentando guardar en Firestore:", datos);
       await addDoc(collection(dbFirestore, "comentarios"), datos);
       console.log("✅ Comentario guardado en Firestore");
     } catch (error) {
       console.error("❌ Error en Firestore. Guardando offline:", error);
+      console.error("FALLÓ guardado en Firestore:", error);
       await guardarComentarioOFF(datos);
     }
   } else {
