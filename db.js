@@ -31,7 +31,7 @@ export function inicializarDB() {
 
 export async function guardarComentario(categoria, comentario) {
   try {
-    await addDoc(collection(dbFirestore, "comentarios"), {...comentario, categoria});
+    await addDoc(collection(dbFirestore, "comentarios"), {...comentario, categoria, fecha: new Date().toISOString()});
     console.log("Comentario guardado en Firestore");
   } catch (error) {
     console.error("Error al guardar comentario:", error);
@@ -85,7 +85,7 @@ export async function reenviarPendientes() {
       console.log("Comentarios pendientes encontrados");
       for (const comentario of pendientes) {
         try {
-          await addDoc(collection(dbFirestore, "comentarios"), {...comentario, fecha: new Date().toLocaleString()});
+          await addDoc(collection(dbFirestore, "comentarios"), {...comentario, fecha: new Date().toISOString()});
           const borrarTx = db.transaction("pendientes", "readwrite");
           const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);

@@ -60,7 +60,7 @@ buttons.forEach(btn => {
       }
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
-      const comentario = {texto, calificacion, fecha: new Date().toLocaleString(), email: usuario};
+      const comentario = {texto, calificacion, fecha: new Date().toISOString(), email: usuario};
       if (navigator.onLine) {
         await guardarComentario(categoria, comentario);
         mostrarComentarios(categoria, document.getElementById('comentarios'));
