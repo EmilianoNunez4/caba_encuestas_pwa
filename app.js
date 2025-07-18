@@ -6,17 +6,22 @@ const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
 const usuario = localStorage.getItem("user");
 
-  document.addEventListener("DOMContentLoaded", () => {
+ document.addEventListener("DOMContentLoaded", () => {
     const boton = document.querySelector(".permiso");
     if (!boton) return;
 
-    boton.style.transition = "opacity 0.4s ease";
+    boton.style.transition = "opacity 0.6s ease";
 
     boton.addEventListener("click", function () {
-      this.style.opacity = "0";
+      this.textContent = "Notificaciones activas";
+
       setTimeout(() => {
-        this.style.display = "none";
-      }, 400);
+        this.style.opacity = "0";
+
+        setTimeout(() => {
+          this.style.display = "none";
+        }, 600); // tiempo para que termine el fade
+      }, 2000); // espera 1s con el nuevo texto visible
     });
   });
 

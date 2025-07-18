@@ -143,16 +143,18 @@ textarea {
   width: 160px;
   border-radius: 10px;
   font-size: 14px;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.6 ease;
 }
 
 .permiso:hover{
-  background-color: #1e881a;
+  background-color: #059300;
+  width: 170px;
   color: white;
 }
 
 .permiso:active{
-  background-color: #1e881a;
+  background-color: #84d081;
+    width: 170px;
   color: white;
 }
 
