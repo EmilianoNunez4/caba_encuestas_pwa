@@ -90,7 +90,7 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
-  console.log("📡 Ejecutando reenviarPendientes...");
+  console.log("Ejecutando reenviarPendientes...");
   if (!db) {
     console.warn("IndexedDB no está inicializada todavía");
     return;
