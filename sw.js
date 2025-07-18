@@ -52,7 +52,7 @@ const messaging = firebase.messaging();
 
 // ✅ ESCUCHA DE NOTIFICACIONES EN SEGUNDO PLANO
 messaging.onBackgroundMessage((payload) => {
-  console.log("Mensaje en sgundo plano", payload);
+  console.log("Mensaje en segundo plano", payload);
 
   const notificationTitle = payload.notification.title;
   const notificationOptions = {

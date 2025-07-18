@@ -1,12 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDktnfDVAwTjdLgApgx6jOiph8fCVVQsjY",
@@ -19,8 +12,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const dbFirestore = getFirestore(app);
-
-
 let db;
 
 export function inicializarDB() {
@@ -60,7 +51,7 @@ export function guardarComentarioOFF(categoria, comentario) {
       const store = tx.objectStore("pendientes");
       store.add({ ...comentario, categoria });
       tx.oncomplete = () => {
-        console.log("Comentario guardado offline:", comentario);
+        console.log("Comentario guardado offline");
         resolve();
       };
       tx.onerror = (e) => {
@@ -76,10 +67,7 @@ export function guardarComentarioOFF(categoria, comentario) {
 
 export async function traerComentarios(categoria) {
   try {
-    const q = query(
-      collection(dbFirestore, "comentarios"),
-      where("categoria", "==", categoria)
-    );
+    const q = query(collection(dbFirestore, "comentarios"), where("categoria", "==", categoria));
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map(doc => doc.data());
   } catch (error) {
@@ -90,7 +78,7 @@ export async function traerComentarios(categoria) {
 
 //AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
-  console.log("Ejecutando reenviarPendientes...");
+  console.log("Ejecutando reenviarPendientes.");
   if (!db) {
     console.warn("IndexedDB no está inicializada todavía");
     return;
@@ -100,35 +88,26 @@ export async function reenviarPendientes() {
     const leerTx = db.transaction("pendientes", "readonly");
     const storeLeer = leerTx.objectStore("pendientes");
     const request = storeLeer.getAll();
-
     request.onsuccess = async () => {
       const pendientes = request.result;
-      console.log("Comentarios pendientes encontrados:", pendientes);
-
+      console.log("Comentarios pendientes encontrados");
       for (const comentario of pendientes) {
         try {
           // 🔥 Subir a Firestore
-          await addDoc(collection(dbFirestore, "comentarios"), {
-            ...comentario,
-            fecha: new Date().toISOString()
-          });
-
+          await addDoc(collection(dbFirestore, "comentarios"), {...comentario, fecha: new Date().toISOString()});
           // 🧹 Borrar de IndexedDB
           const borrarTx = db.transaction("pendientes", "readwrite");
           const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);
-
-          console.log("Comentario reenviado:", comentario);
+         // console.log("Comentario reenviado:", comentario);
         } catch (error) {
           console.error("Error reenviando comentario:", error);
           reject(error);
           return;
         }
       }
-
       resolve(); // 🟢 Terminó todo bien
     };
-
     request.onerror = (e) => {
       console.error("Error al leer los comentarios pendientes:", e);
       reject(e);

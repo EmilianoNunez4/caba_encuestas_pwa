@@ -6,7 +6,7 @@ const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
 const usuario = localStorage.getItem("user");
 
- document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
     const boton = document.querySelector(".permiso");
     if (!boton) return;
 
@@ -20,10 +20,10 @@ const usuario = localStorage.getItem("user");
 
         setTimeout(() => {
           this.style.display = "none";
-        }, 600); // tiempo para que termine el fade
-      }, 2000); // espera 1s con el nuevo texto visible
+        }, 600); 
+      }, 2000); 
     });
-  });
+});
 
 if (!usuario) {
   alert("Debes iniciar sesión o entrar como invitado.");
@@ -69,7 +69,6 @@ buttons.forEach(btn => {
       } else {
         await guardarComentarioOFF(categoria, comentario);
         content.textContent = "Sin conexión. Guardado localmente.";
-        console.log("Comentario guardado offline en IndexedDB");
       }
 
       document.getElementById('comentario').value = "";
@@ -78,7 +77,6 @@ buttons.forEach(btn => {
     mostrarComentarios(categoria, document.getElementById('comentarios'));
   });
 });
-
 
 window.addEventListener("online", async () => {
   console.log("Conexión restaurada");
@@ -93,7 +91,6 @@ window.addEventListener("online", async () => {
     }
   }
 });
-
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
