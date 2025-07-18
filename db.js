@@ -31,7 +31,7 @@ export function inicializarDB() {
 
 export async function guardarComentario(categoria, comentario) {
   try {
-    await addDoc(collection(dbFirestore, "comentarios"), {...comentario, categoria, fecha: new Date().toLocaleString()});
+    await addDoc(collection(dbFirestore, "comentarios"), {...comentario, categoria});
     console.log("Comentario guardado en Firestore");
   } catch (error) {
     console.error("Error al guardar comentario:", error);

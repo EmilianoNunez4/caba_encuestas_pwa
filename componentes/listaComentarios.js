@@ -6,7 +6,7 @@ export async function mostrarComentarios(categoria, container) {
     <div class="comentario">
       <strong class="puntuacion">${"★".repeat(c.calificacion)}</strong><br/>
       ${c.texto}<br/>
-      <small>${new Date(c.fecha).toLocaleString()}</small><br/>
+      <small>${c.fecha}</small>br/>
       <em style="font-size: 12px; color: gray;">Enviado por: ${'Anónimo'}</em>
     </div>
   `).join("");
