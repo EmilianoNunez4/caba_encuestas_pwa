@@ -58,7 +58,6 @@ buttons.forEach(btn => {
         alert("Debes iniciar sesión para enviar un comentario.");
         return;
       }
-
       const texto = document.getElementById('comentario').value;
       const calificacion = document.querySelectorAll('.calificacion.selected').length;
       const comentario = {texto, calificacion, fecha: new Date().toISOString(), email: usuario};
@@ -70,7 +69,6 @@ buttons.forEach(btn => {
         await guardarComentarioOFF(categoria, comentario);
         content.textContent = "Sin conexión. Guardado localmente.";
       }
-
       document.getElementById('comentario').value = "";
     });
 
@@ -82,7 +80,6 @@ window.addEventListener("online", async () => {
   console.log("Conexión restaurada");
   await reenviarPendientes();
   console.log("Comentarios pendientes reenviados correctamente");
-
   const categoriaActual = localStorage.getItem("categoriaActual");
   if (categoriaActual) {
     const contenedor = document.getElementById('comentarios');

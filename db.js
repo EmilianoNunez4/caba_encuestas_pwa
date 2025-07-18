@@ -29,21 +29,15 @@ export function inicializarDB() {
   request.onsuccess = e => { db = e.target.result; };
 }
 
-// 🔥 Guardar comentario en Firestore
 export async function guardarComentario(categoria, comentario) {
   try {
-    await addDoc(collection(dbFirestore, "comentarios"), {
-      ...comentario,
-      categoria,
-      fecha: new Date().toISOString()
-    });
+    await addDoc(collection(dbFirestore, "comentarios"), {...comentario, categoria, fecha: new Date().toISOString()});
     console.log("Comentario guardado en Firestore");
   } catch (error) {
     console.error("Error al guardar comentario:", error);
   }
 }
 
-//agregue este que gvuarda los comentarios de manera ofline
 export function guardarComentarioOFF(categoria, comentario) {
   return new Promise((resolve, reject) => {
     try {
@@ -76,14 +70,12 @@ export async function traerComentarios(categoria) {
   }
 }
 
-//AGREGUE ESTE QUE SIRVE PARA REENVIAR LOS COMENTS PENDIENTES
 export async function reenviarPendientes() {
   console.log("Ejecutando reenviarPendientes.");
   if (!db) {
     console.warn("IndexedDB no está inicializada todavía");
     return;
   }
-
   return new Promise((resolve, reject) => {
     const leerTx = db.transaction("pendientes", "readonly");
     const storeLeer = leerTx.objectStore("pendientes");
@@ -93,20 +85,17 @@ export async function reenviarPendientes() {
       console.log("Comentarios pendientes encontrados");
       for (const comentario of pendientes) {
         try {
-          // 🔥 Subir a Firestore
           await addDoc(collection(dbFirestore, "comentarios"), {...comentario, fecha: new Date().toISOString()});
-          // 🧹 Borrar de IndexedDB
           const borrarTx = db.transaction("pendientes", "readwrite");
           const storeBorrar = borrarTx.objectStore("pendientes");
           storeBorrar.delete(comentario.id);
-         // console.log("Comentario reenviado:", comentario);
         } catch (error) {
           console.error("Error reenviando comentario:", error);
           reject(error);
           return;
         }
       }
-      resolve(); // 🟢 Terminó todo bien
+      resolve(); 
     };
     request.onerror = (e) => {
       console.error("Error al leer los comentarios pendientes:", e);

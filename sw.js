@@ -34,11 +34,9 @@ self.addEventListener("fetch", event => {
   );
 });
 
-// ✅ IMPORTAMOS FCM PARA SEGUNDO PLANO
 importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js");
 importScripts("https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging-compat.js");
 
-// ✅ INICIALIZAMOS FIREBASE SOLO EN EL SW (modo compat)
 firebase.initializeApp({
   apiKey: "AIzaSyDktnfDVAwTjdLgApgx6jOiph8fCVVQsjY",
   authDomain: "caba-encuestas.firebaseapp.com",
@@ -49,16 +47,6 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
-
-/* ✅ ESCUCHA DE NOTIFICACIONES EN SEGUNDO PLANO
-messaging.onBackgroundMessage((payload) => {
-  
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {body: payload.notification.body, icon: "/assets/LOGOBA.png"};
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
-*/
-
 messaging.onBackgroundMessage((payload) => {
   console.log("Notificacion enviada en segundo plano");
   if (!payload.notification) {

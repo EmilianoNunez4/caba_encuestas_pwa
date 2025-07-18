@@ -1,7 +1,6 @@
 import { messaging } from './firebaseConfig.js';
 import { getToken, onMessage } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-messaging.js";
 
-// ✅ Esperamos que cargue el DOM para asegurar que el botón existe
 window.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("solicitarPermiso");
   const output = document.getElementById("token");
@@ -14,7 +13,7 @@ window.addEventListener("DOMContentLoaded", () => {
     try {
       const permission = await Notification.requestPermission();
       if (permission !== "granted") {
-        alert("Debés permitir notificaciones");
+        alert("Debés permitir las notificaciones");
         return;
       }
       const registration = await navigator.serviceWorker.register("/sw.js");
@@ -29,8 +28,8 @@ window.addEventListener("DOMContentLoaded", () => {
       console.error("Error al obtener token:", err);
     }
   });
-  // ✅ Escuchar notificaciones cuando la app está abierta
-onMessage(messaging, (payload) => {
+
+  onMessage(messaging, (payload) => {
     console.log("Notificacion recibida en primer plano");
     alert(`${payload.notification.title}\n${payload.notification.body}`);
   });
