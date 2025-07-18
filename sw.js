@@ -50,15 +50,20 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// ✅ ESCUCHA DE NOTIFICACIONES EN SEGUNDO PLANO
+/* ✅ ESCUCHA DE NOTIFICACIONES EN SEGUNDO PLANO
 messaging.onBackgroundMessage((payload) => {
-  console.log("Mensaje en segundo plano", payload);
-
+  
   const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: "/assets/LOGOBA.png" // ruta absoluta recomendada
-  };
-
+  const notificationOptions = {body: payload.notification.body, icon: "/assets/LOGOBA.png"};
   self.registration.showNotification(notificationTitle, notificationOptions);
+});
+*/
+
+messaging.onBackgroundMessage((payload) => {
+  console.log("Notificacion enviada en segundo plano");
+  if (!payload.notification) {
+    const notificationTitle = "Nueva notificación";
+    const notificationOptions = { body: payload.data?.body || "Tienes un nuevo mensaje." };
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  }
 });

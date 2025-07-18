@@ -31,7 +31,7 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   // ✅ Escuchar notificaciones cuando la app está abierta
 onMessage(messaging, (payload) => {
-    console.log("Mensaje en primer plano:", payload);
+    console.log("Notificacion recibida en primer plano");
     alert(`${payload.notification.title}\n${payload.notification.body}`);
   });
 });
