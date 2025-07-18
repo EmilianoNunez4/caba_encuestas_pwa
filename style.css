@@ -14,7 +14,7 @@ body {
 h1 {
   font-size:16px;
   text-align: center;
-  color: white;
+  color: #383838;
   font-weight: 900;
 }
 
@@ -66,7 +66,7 @@ h2{
 }
 
 #content {
-  background: rgb(241, 255, 164);
+  background: rgb(255, 255, 255);
   padding: 20px;
   border-radius: 15px;
   max-width: 600px;
@@ -93,7 +93,7 @@ textarea {
 
 #comentario{
   margin-top: 5px;
-  background-color: rgb(244, 244, 168);
+  background-color: rgb(255, 255, 255);
   border: solid 1px rgb(0, 0, 0);
   border-radius: 10px;
 }
@@ -134,8 +134,8 @@ textarea {
 }
 
 .permiso{
-  background-color: #09b803;
-  box-shadow: 5px 5px 10px rgb(106, 105, 105);
+  background-color: #2bbe25;
+  box-shadow: 2px 2px 7px rgb(106, 105, 105);
   color: white;
   font-weight: bold;
   border-style: none;
@@ -143,6 +143,29 @@ textarea {
   width: 160px;
   border-radius: 10px;
   font-size: 14px;
+}
+
+.permiso:hover{
+  background-color: #1e881a;
+  color: white;
+}
+
+.permiso:active{
+  background-color: #1e881a;
+  color: white;
+  font-size: 0px;
+  width: 0px;
+  height: 0px;
+  transition: 1s;
+}
+
+.permiso::before{
+  background-color: #1e881a00;
+  font-size: 0px;
+  color: rgba(255, 255, 255, 0);
+  width: 0px;
+  height: 0px;
+  transition: 1s;
 }
 
 #submit{

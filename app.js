@@ -6,6 +6,14 @@ const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
 const usuario = localStorage.getItem("user");
 
+  const boton = document.querySelector('.permiso');
+    boton.addEventListener('click', () => {
+      // Guarda el estado del botón en localStorage
+      localStorage.setItem('botonEstado', 'clicado');
+      // Aplica los cambios visuales al botón (opcional)
+      boton.classList.add('boton-clicado');
+    });
+
 if (!usuario) {
   alert("Debes iniciar sesión o entrar como invitado.");
   window.location.href = "login.html";

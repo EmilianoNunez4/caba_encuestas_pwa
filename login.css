@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #ffffff!important;
-    background-image: url(assets/fondo.jpg);
+    background-color: #69a6cf!important;
+    background-image: url(assets/fondo.jp);
     background-repeat: no-repeat;
     background-size: cover;
     display: flex;
@@ -30,7 +30,7 @@ p {
 h2{
   text-align: center;
   font-weight: 800;
-  color: #ffffff;
+  color:rgb(255, 255, 255);
 }
 .logo{
   width: 90px;
@@ -56,4 +56,9 @@ button:hover{
 
 button::after {
     background-color: #198edb;
+}
+
+.cuentatext{
+    color: rgb(255, 255, 255);
+    font-weight: 600;
 }

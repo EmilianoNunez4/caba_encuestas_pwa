@@ -27,7 +27,7 @@ window.addEventListener("DOMContentLoaded", () => {
         serviceWorkerRegistration: registration
       });
 
-      console.log("🔑 Token generado:", token);
+      console.log("Token generado:", token);
       if (output) output.textContent = "Token: " + token;
     } catch (err) {
       console.error("Error al obtener token:", err);
@@ -36,7 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Escuchar notificaciones cuando la app está abierta
   onMessage(messaging, (payload) => {
-    console.log("📩 Mensaje en primer plano:", payload);
-    alert(`🔔 ${payload.notification.title}\n${payload.notification.body}`);
+    console.log("Mensaje en primer plano:", payload);
+    alert(`${payload.notification.title}\n${payload.notification.body}`);
   });
 });
