@@ -6,13 +6,19 @@ const content = document.getElementById('content');
 const buttons = document.querySelectorAll('.tabs button');
 const usuario = localStorage.getItem("user");
 
-  const boton = document.querySelector('.permiso');
-    boton.addEventListener('click', () => {
-      // Guarda el estado del botón en localStorage
-      localStorage.setItem('botonEstado', 'clicado');
-      // Aplica los cambios visuales al botón (opcional)
-      boton.classList.add('boton-clicado');
+  document.addEventListener("DOMContentLoaded", () => {
+    const boton = document.querySelector(".permiso");
+    if (!boton) return;
+
+    boton.style.transition = "opacity 0.4s ease";
+
+    boton.addEventListener("click", function () {
+      this.style.opacity = "0";
+      setTimeout(() => {
+        this.style.display = "none";
+      }, 400);
     });
+  });
 
 if (!usuario) {
   alert("Debes iniciar sesión o entrar como invitado.");
